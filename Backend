@@ -1,0 +1,36 @@
+// Import required modules
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+
+// Connect to MongoDB database
+mongoose.connect("mongodb://localhost/bookreviewclub", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
+// Create a schema for book reviews
+const bookReviewSchema = new mongoose.Schema({
+  title: String,
+  author: String,
+  rating: Number,
+  review: String,
+  upvotes: Number
+});
+
+// Create a model for book reviews
+const BookReview = mongoose.model("BookReview", bookReviewSchema);
+
+// Create an express app
+const app = express();
+
+// Use body-parser middleware
+app.use(bodyParser.json());
+
+// Create a route to add a book review
+app.post("/api/bookreviews", (req, res) => {
+  const bookReview = new BookReview({
+    title: req.body.title,
+    author: req.body.author,
+    rating: req.body.rating,
+    review: req.body
